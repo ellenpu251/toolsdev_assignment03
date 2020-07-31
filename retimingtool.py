@@ -10,6 +10,7 @@ from shiboken2 import wrapInstance
 import maya.cmds as cmds
 import maya.mel as mel
 import maya.OpenMayaUI as omui
+import pymel.core as pmc
 
 
 class RetimingUtils(object):
@@ -226,9 +227,11 @@ class RetimingUi(QtWidgets.QDialog):
             cmds.undoInfo(closeChunk=True)
 
     def ripple_delete(self):
+        selected_objects = pmc.selected()
         start_time, end_time = RetimingUtils.get_selected_range()
-        cmds.cutKey(self, time=(start_time, end_time), clear=True)
+        cmds.cutKey(selected_objects, time=(start_time, end_time), clear=True)
 
     def cleanup_keys(self):
+        selected_objects = pmc.selected()
         start_time, end_time = RetimingUtils.get_selected_range()
-        cmds.snapKey(self, time=(start_time, end_time))
+        cmds.snapKey(selected_objects, time=(start_time, end_time))
